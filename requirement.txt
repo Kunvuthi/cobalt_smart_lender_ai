@@ -18,3 +18,4 @@ python - 3.12.3
     opencv-python
     gdown
     dvc
+    boto3
