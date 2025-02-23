@@ -1,0 +1,21 @@
+python - 3.12.3 
+    numpy
+    pandas
+    scikit-learn
+    matplotlib
+    seaborn
+    scipy
+    jupyter
+    statsmodels
+    tensorflow
+    keras
+    pytorch
+    xgboost
+    lightgbm
+    nltk
+    spacy
+    gensim
+    opencv-python
+    gdown
+    dvc
+    boto3
