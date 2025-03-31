@@ -97,13 +97,8 @@ def main():
     )
     logging.info(f"Train shape: {X_train.shape}, Test shape: {X_test.shape}")
 
-    # (Optional) If you want SMOTE for imbalance, do it here:
-    # from imblearn.over_sampling import SMOTE
-    # sm = SMOTE(random_state=42)
-    # X_train, y_train = sm.fit_resample(X_train, y_train)
-
     # --------------------------
-    # 4. Calculate scale_pos_weight (if heavily imbalanced)
+    # 4. Calculate scale_pos_weight (heavily imbalanced)
     # --------------------------
     neg_count = (y_train == 0).sum()
     pos_count = (y_train == 1).sum()
@@ -245,7 +240,6 @@ def main():
     metrics_json_str = json.dumps(metrics_dict, indent=2)
     metrics_s3_key = os.path.join(OUTPUT_PATH, METRICS_JSON)
     upload_bytes_to_s3(metrics_json_str.encode('utf-8'), BUCKET_NAME, metrics_s3_key)
-
 
 if __name__ == "__main__":
     main()
