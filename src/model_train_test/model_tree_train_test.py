@@ -97,11 +97,6 @@ def main():
     )
     logging.info(f"Train shape: {X_train.shape}, Test shape: {X_test.shape}")
 
-    # (Optional) If you want SMOTE for imbalance, do it here:
-    # from imblearn.over_sampling import SMOTE
-    # sm = SMOTE(random_state=42)
-    # X_train, y_train = sm.fit_resample(X_train, y_train)
-
     # --------------------------
     # 4. Calculate scale_pos_weight (if heavily imbalanced)
     # --------------------------
