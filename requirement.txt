@@ -9,7 +9,6 @@ python - 3.12.3
     statsmodels
     tensorflow
     keras
-    pytorch
     xgboost
     gdown
     dvc
