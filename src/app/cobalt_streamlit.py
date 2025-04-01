@@ -126,47 +126,48 @@ elif menu == "📤 Bulk Prediction + SHAP":
     uploaded_file = st.file_uploader("Upload CSV with required columns", type="csv")
 
     if uploaded_file:
-        df = pd.read_csv(uploaded_file)
-        st.write("✅ Uploaded Data Preview:", df.head())
+        try:
+            df = pd.read_csv(uploaded_file)
+            st.write("✅ Uploaded Data Preview:", df.head())
+        except Exception as e:
+            st.error(f"❌ Failed to read CSV: {e}")
+            st.stop()
 
         if st.button("🚀 Run Bulk Prediction"):
             try:
-                # Send CSV file to FastAPI
-                files = {"file": uploaded_file.getvalue()}
-                response = requests.post(f"{API_URL}/predict_bulk_csv", files={"file": uploaded_file})
+                # Send CSV file to FastAPI backend
+                files = {"file": (uploaded_file.name, uploaded_file.getvalue(), "text/csv")}
+                response = requests.post(f"{API_URL}/predict_bulk_csv", files=files)
+                response.raise_for_status()
                 results = response.json()["predictions"]
 
+                # Convert result to DataFrame
                 df_result = pd.DataFrame(results)
+
+                # Coerce columns to numeric where possible (NaNs allowed)
+                df_result = df_result.apply(pd.to_numeric, errors="coerce")
+
                 st.subheader("📈 Prediction Results")
                 st.dataframe(df_result)
 
-                # Download option
+                # Download button
                 st.download_button("📥 Download Results", df_result.to_csv(index=False), "bulk_predictions.csv")
 
-                # SHAP Bulk
-                st.subheader("🔍 SHAP Visualizer")
-                shap_resp = requests.post(f"{API_URL}/shap_bulk", json={"data": results})
-                shap_json = shap_resp.json()
+                # Feature Importance Visualization
+                st.subheader("📊 Feature Importance (Top 10)")
 
-                all_shap_vals = np.array(shap_json["shap_values"])
-                base_val = shap_json["base_value"]
-                features = shap_json["features"]
-                inputs = pd.DataFrame(shap_json["inputs"])
+                importance_resp = requests.post(f"{API_URL}/feature_importance_bulk", json={"data": results})
+                importance_resp.raise_for_status()
+                importance_data = importance_resp.json()["top_features"]
 
-                selected_index = st.slider("Select row to explain", 0, len(inputs) - 1, 0)
-                st.json(inputs.iloc[selected_index].to_dict())
+                features = [item["feature"] for item in importance_data]
+                importances = [item["importance"] for item in importance_data]
 
-                # Interactive force plot
-                explainer = shap.Explanation(
-                    values=all_shap_vals[selected_index],
-                    base_values=base_val,
-                    data=inputs.iloc[selected_index].values,
-                    feature_names=features
-                )
-
-                st.set_option('deprecation.showPyplotGlobalUse', False)
-                shap.plots.waterfall(explainer, max_display=10)
-                st.pyplot()
+                fig, ax = plt.subplots()
+                ax.barh(features[::-1], importances[::-1])
+                ax.set_xlabel("Importance (gain)")
+                ax.set_title("Top 10 Important Features")
+                st.pyplot(fig)
 
             except Exception as e:
-                st.error(f"Prediction or SHAP failed: {e}")
+                st.error(f"❌ Prediction or Feature Importance failed: {e}")
