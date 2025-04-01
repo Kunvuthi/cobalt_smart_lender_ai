@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+*.ipynb
+.DS_Store
+.vscode/
+.git/
+../../data/
+../../notebooks/
