@@ -13,3 +13,7 @@ python - 3.12.3
     gdown
     dvc
     boto3
+    streamlit
+    uvicorn
+    fastapi
+    python_multipart

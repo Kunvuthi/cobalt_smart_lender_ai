@@ -9,14 +9,14 @@ ENV PYTHONUNBUFFERED=1
 WORKDIR /app
 
 # Copy requirements.txt into image
-COPY ../../requirements.txt /app/requirements.txt
+COPY requirements.txt /app/requirements.txt
 
 # Install dependencies
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy entire src/ directory into container (your app lives inside /app now)
-COPY ../../src /app
+COPY src /app
 
 # Expose FastAPI port
 EXPOSE 8000
