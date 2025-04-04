@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  api:
+    image: kunvuthi/cobalt-lender-api:latest
+    container_name: cobalt-lender-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ~/.aws:/root/.aws  # optional if API pulls from S3
+    networks:
+      - cobalt-network
+
+  ui:
+    image: kunvuthi/cobalt-lender-ui:latest
+    container_name: cobalt-lender-ui
+    ports:
+      - "8001:8001"
+    environment:
+      - API_URL=http://api:8000  # service name is used here
+    networks:
+      - cobalt-network
+
+networks:
+  cobalt-network:
+    driver: bridge
