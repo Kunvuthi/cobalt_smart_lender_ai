@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import json
 
 # BACKEND API CONFIG
-API_URL = "http://localhost:8000"  # Change to your EC2 URL when deployed
+API_URL = "http://cobalt-lender-api:8000"  # Change to your EC2 URL when deployed
 
 # MODEL INPUT COLUMNS
 NUMERIC_COLS = [
