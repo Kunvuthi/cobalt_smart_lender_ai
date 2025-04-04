@@ -16,7 +16,7 @@ RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy your Streamlit app files
-COPY . /app
+COPY src/streamlit /app
 
 # Expose Streamlit default port
 EXPOSE 8501

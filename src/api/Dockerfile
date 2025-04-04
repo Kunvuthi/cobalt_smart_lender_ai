@@ -16,7 +16,7 @@ RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy entire src/ directory into container (your app lives inside /app now)
-COPY src /app
+COPY src/api /app
 
 # Expose FastAPI port
 EXPOSE 8000
