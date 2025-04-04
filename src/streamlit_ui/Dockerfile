@@ -19,7 +19,7 @@ RUN pip install --upgrade pip && \
 COPY src/streamlit_ui /app
 
 # Expose Streamlit default port
-EXPOSE 8501
+EXPOSE 8001
 
 # Run Streamlit
-CMD ["streamlit", "run", "cobalt_streamlit.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["streamlit", "run", "cobalt_streamlit.py", "--server.port=8001", "--server.address=0.0.0.0"]
