@@ -15,7 +15,7 @@ services:
     image: kunvuthi/cobalt-lender-ui:latest
     container_name: cobalt-lender-ui
     ports:
-      - "8501:8501"
+      - "8001:8001"
     environment:
       - API_URL=http://api:8000  # service name is used here
     networks:
